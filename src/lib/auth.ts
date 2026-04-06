@@ -16,15 +16,19 @@ export class AuthService {
 
     // Mock authentication logic
     if (credentials.email && credentials.password) {
+      const token = 'mock-jwt-token'
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('authToken', token)
+      }
       return {
         success: true,
         user: {
           id: '1',
           email: credentials.email,
           name: 'John Doe',
-          role: 'admin'
+          role: 'employee'
         },
-        token: 'mock-jwt-token'
+        token
       }
     }
 
