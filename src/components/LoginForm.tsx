@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import { Button, Input } from '@/components/ui'
 import { AuthService } from '@/lib/auth'
@@ -13,6 +14,7 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ onSuccess, onError }: LoginFormProps) {
+  const router = useRouter()
   const [formData, setFormData] = useState<LoginCredentials>({
     email: '',
     password: ''
@@ -56,7 +58,11 @@ export default function LoginForm({ onSuccess, onError }: LoginFormProps) {
       
       if (response.success) {
         console.log('Login successful:', response)
-        onSuccess?.()
+        if (onSuccess) {
+          onSuccess()
+        } else {
+          router.push('/employee/home')
+        }
       } else {
         const errorMessage = response.message || 'Login failed'
         console.error('Login failed:', errorMessage)
